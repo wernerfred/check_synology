@@ -1,4 +1,4 @@
-# check_synology [![CodeFactor](https://www.codefactor.io/repository/github/wernerfred/check_synology/badge)](https://www.codefactor.io/repository/github/wernerfred/check_synology)
+# check_synology [![Release](https://img.shields.io/github/release/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology/releases) [![CodeFactor](https://www.codefactor.io/repository/github/wernerfred/check_synology/badge)](https://www.codefactor.io/repository/github/wernerfred/check_synology)
 
 This plugin uses ```snmpv3``` with ```MD5``` + ```AES``` to check a lot of different values on your Synology DiskStation.
 
