@@ -63,4 +63,23 @@ object CheckCommand "check_synology" {
   }
 }
 ```
-If you want to add a missing check or another value to be added than you can use the [official Synology MIB Guide](https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf) as a hint for the right MIBs / OIDs.
+Example ```Service``` for use with ```icinga2```:
+```
+apply Service "syno-load" {
+  import "generic-service"
+
+  check_command = "check_synology"
+
+  vars.synology_mode = "load"
+  vars.synology_host = "$address$"
+  
+  vars.synology_warning = "$synology_load_w$"
+  vars.synology_critical = "$synology_load_c$"
+
+  assign where host.vars.os == "DSM"
+}
+```
+Make sure to set ```synology_snmp_user```, ```synology_snmp_autkey``` and ```synology_snmp_privkey``` (e.g. in the host config file).
+
+
+If you want to add a missing check or another value to be added than you can use the [official Synology MIB Guide](https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf) as a hint for the right MIBs / OIDs and start a pull-request.
