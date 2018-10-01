@@ -83,3 +83,5 @@ Make sure to set ```synology_snmp_user```, ```synology_snmp_autkey``` and ```syn
 
 
 If you want to add a missing check or another value to be added than you can use the [official Synology MIB Guide](https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf) as a hint for the right MIBs / OIDs and start a pull-request.
+
+This plugin was tested successfully with DS215j and DS718+
