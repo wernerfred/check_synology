@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from pysnmp.hlapi import *
+import pysnmp
 import argparse
 import sys
 import math
@@ -49,6 +50,29 @@ def snmpget(oid):
             #answer = (' = '.join([x.prettyPrint() for x in varBind]))
             return varBind[-1].prettyPrint()
 
+# Walk the given OID and return all child OIDs as a list of tuples of OID and value
+def snmpwalk(oid):
+    res = []
+
+    for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),
+               UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=usmAesCfb128Protocol),
+               UdpTransportTarget((hostname, 161)),
+               ContextData(),
+               ObjectType(ObjectIdentity(oid)),
+               lexicographicMode = False,
+               lookupMib = False
+    ):
+        if errorIndication:
+            print(errorIndication)
+        elif errorStatus:
+            print('%s at %s' % (errorStatus.prettyPrint(),
+                                errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+        else:
+            for varBind in varBinds:
+                res.append(varBind)
+    return res
+
+
 def exitCode():
     if state == 'OK':
         sys.exit(0)
@@ -89,13 +113,12 @@ if mode == 'disk':
     maxDisk = 0
     output = ''
     perfdata = '|'
-    for i in range(0, 64, 1):
-        disk = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
-        if disk.startswith("No Such Instance"):
-            break
-        maxDisk = maxDisk + 1
-    for i in range(0, maxDisk, 1):
-        disk_name = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
+    for (oid, nm) in snmpwalk('1.3.6.1.4.1.6574.2.1.1.2'):
+        # snmpwalk returns a list of tuples (OID[=ObjectName], value[=OctetString])
+        # Running Index is the last entry of the OID object:
+        i = oid[-1]
+        # OctetString is a raw, binary object, so we need to convert to string
+        disk_name = str(nm)
         disk_status_nr = snmpget('1.3.6.1.4.1.6574.2.1.1.5.' + str(i))
         disk_temp = snmpget('1.3.6.1.4.1.6574.2.1.1.6.' + str(i))
         status_translation = {
@@ -122,8 +145,12 @@ if mode == 'disk':
 if mode == 'storage':
     output = ''
     perfdata = '|'
-    for i in range(1,256,1):
-        storage_name = snmpget('1.3.6.1.2.1.25.2.3.1.3.' + str(i))
+    for (oid, nm) in snmpwalk('1.3.6.1.2.1.25.2.3.1.3'):
+        # snmpwalk returns a list of tuples (OID[=ObjectName], value[=OctetString])
+        # Running Index is the last entry of the OID object:
+        i = oid[-1]
+        # OctetString is a raw, binary object, so we need to convert to string
+        storage_name = str(nm)
         if storage_name.startswith("/volume"):
             allocation_units = snmpget('1.3.6.1.2.1.25.2.3.1.4.' + str(i))
             size = snmpget('1.3.6.1.2.1.25.2.3.1.5.' + str(i))
