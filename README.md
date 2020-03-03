@@ -2,7 +2,7 @@
 
 This plugin uses ```snmpv3``` with ```MD5``` + ```AES``` to check a lot of different values on your Synology DiskStation.
 
-This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip install pysnmp```
+This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip install easysnmp```
 
 Usage:
 ```
@@ -84,4 +84,4 @@ Make sure to set ```synology_snmp_user```, ```synology_snmp_autkey``` and ```syn
 
 If you want to add a missing check or another value to be added than you can use the [official Synology MIB Guide](https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf) as a hint for the right MIBs / OIDs and start a pull-request.
 
-This plugin was tested successfully with DS215j and DS718+
+This plugin was tested successfully with DS215j, DS216+ and DS718+
