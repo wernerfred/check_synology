@@ -2,6 +2,7 @@ from pysnmp.hlapi import *
 import argparse
 import sys
 import math
+import re
 
 AUTHOR = "Frederic Werner"
 VERSION = 0.1
