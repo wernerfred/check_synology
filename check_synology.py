@@ -2,6 +2,7 @@ from pysnmp.hlapi import *
 import argparse
 import sys
 import math
+import re
 
 AUTHOR = "Frederic Werner"
 VERSION = 0.1
@@ -123,7 +124,7 @@ if mode == 'storage':
     perfdata = '|'
     for i in range(1,256,1):
         storage_name = snmpget('1.3.6.1.2.1.25.2.3.1.3.' + str(i))
-        if storage_name.startswith("/volume"):
+        if re.match("/volume(?!.+/@docker.*)", storage_name) :
             allocation_units = snmpget('1.3.6.1.2.1.25.2.3.1.4.' + str(i))
             size = snmpget('1.3.6.1.2.1.25.2.3.1.5.' + str(i))
             used = snmpget('1.3.6.1.2.1.25.2.3.1.6.' + str(i))
