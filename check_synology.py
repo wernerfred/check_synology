@@ -15,9 +15,11 @@ parser.add_argument("privkey", help="the priv key", type=str)
 parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update", "status"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
+parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
 args = parser.parse_args()
 
 hostname = args.hostname
+port = args.port
 user_name = args.username
 auth_key = args.authkey
 priv_key = args.privkey
@@ -31,7 +33,7 @@ def snmpget(oid):
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
                UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=usmAesCfb128Protocol),
-               UdpTransportTarget((hostname, 161)),
+               UdpTransportTarget((hostname, port)),
                ContextData(),
                ObjectType(ObjectIdentity(oid)
                 #.addAsn1MibSource('file:///usr/share/snmp', 'http://mibs.snmplabs.com/asn1/@mib@')
