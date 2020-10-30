@@ -2,17 +2,17 @@
 
 This plugin uses ```snmpv3``` with ```MD5``` + ```AES``` to check a lot of different values on your Synology DiskStation.
 
-This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip install pysnmp```
+This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip3 install pysnmp```
 
 Usage:
 ```
-> python check_synology.py -h
+> python3 check_synology.py -h
 usage: check_synology.py hostname username authkey privkey {mode} [-h] [-w W] [-c C]
 ```
 
 Example check:
 ```
-> python check_synology.py hostname snmp_user auth_key priv_key load
+> python3 check_synology.py hostname snmp_user auth_key priv_key load
 OK - load average: 1.48, 1.71, 1.74 | load1=1.48c load5=1.71c load15=1.74c
 ```
 
@@ -30,7 +30,7 @@ Available modes:
 Example ```CheckCommand``` for use with ```icinga2```:
 ```
 object CheckCommand "check_synology" {
-  command = ["/usr/bin/python", PluginDir + "/check_synology.py" ]
+  command = ["/usr/bin/python3", PluginDir + "/check_synology.py" ]
 
   arguments = {
     "--host" = {
