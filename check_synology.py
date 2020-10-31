@@ -5,7 +5,7 @@ import math
 import re
 
 AUTHOR = "Frederic Werner"
-VERSION = 0.1
+VERSION = 0.2
 
 parser = argparse.ArgumentParser()
 parser.add_argument("hostname", help="the hostname", type=str)
@@ -15,9 +15,11 @@ parser.add_argument("privkey", help="the priv key", type=str)
 parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update", "status"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
+parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
 args = parser.parse_args()
 
 hostname = args.hostname
+port = args.port
 user_name = args.username
 auth_key = args.authkey
 priv_key = args.privkey
@@ -31,7 +33,7 @@ def snmpget(oid):
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
                UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=usmAesCfb128Protocol),
-               UdpTransportTarget((hostname, 161)),
+               UdpTransportTarget((hostname, port)),
                ContextData(),
                ObjectType(ObjectIdentity(oid)
                 #.addAsn1MibSource('file:///usr/share/snmp', 'http://mibs.snmplabs.com/asn1/@mib@')
@@ -45,9 +47,9 @@ def snmpget(oid):
                             errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
     else:
         for varBind in varBinds:
-            answer = (' = '.join([x.prettyPrint() for x in varBind]))
+            #answer = (' = '.join([x.prettyPrint() for x in varBind]))
             #print(' = '.join([x.prettyPrint() for x in varBind]))
-            return x.prettyPrint()
+            return varBind[-1].prettyPrint()
 
 def exitCode():
     if state == 'OK':
@@ -69,7 +71,7 @@ if mode == 'load':
     if critical and critical < int(math.ceil(float(load1))):
         state = 'CRITICAL'
 
-    print state + ' - load average: %s, %s, %s' % (load1, load5, load15), '| load1=%sc' % load1, 'load5=%sc' % load5, 'load15=%sc' % load15
+    print(state + ' - load average: %s, %s, %s' % (load1, load5, load15), '| load1=%sc' % load1, 'load5=%sc' % load5, 'load15=%sc' % load15)
     exitCode()
 
 if mode == 'memory':
@@ -82,7 +84,7 @@ if mode == 'memory':
     if critical and critical > int(memory_percent):
         state = 'CRITICAL'
 
-    print state + ' - {:0.1f}% '.format(memory_percent) + 'free ({0:0.1f} MB out of {1:0.1f} MB)'.format((memory_unused / 1024), (memory_total / 1024)), '|memory_total=%dc' % memory_total, 'memory_unused=%dc' % memory_unused , 'memory_percent=%d' % memory_percent + '%'
+    print(state + ' - {:0.1f}% '.format(memory_percent) + 'free ({0:0.1f} MB out of {1:0.1f} MB)'.format((memory_unused / 1024), (memory_total / 1024)), '|memory_total=%dc' % memory_total, 'memory_unused=%dc' % memory_unused , 'memory_percent=%d' % memory_percent + '%')
     exitCode()
 
 if mode == 'disk':
@@ -116,7 +118,7 @@ if mode == 'disk':
 
         output += ' - ' + disk_name + ': Status: ' + disk_status + ', Temperature: ' + disk_temp + ' C'
         perfdata += 'temperature' + disk_name + '=' + disk_temp + 'c '
-    print '%s%s %s' % (state, output, perfdata)
+    print('%s%s %s' % (state, output, perfdata))
     exitCode()
 
 if mode == 'storage':
@@ -142,7 +144,7 @@ if mode == 'storage':
 
             output += ' -  free space: ' + storage_name + ' ' + str(storage_free) + ' GB (' + str(storage_used) + ' GB von ' + str(storage_size) + ' GB belegt, ' + str(storage_used_percent) + '%)'
             perfdata += storage_name + '=' + str(storage_used) + 'c '
-    print '%s%s %s' % (state, output, perfdata)
+    print('%s%s %s' % (state, output, perfdata))
     exitCode()
 
 if mode == 'update':
@@ -162,7 +164,7 @@ if mode == 'update':
         state = 'CRITICAL'
 
     update_status = status_translation.get(update_status_nr)
-    print state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_verison, update_status), '| DSMupdate=%sc' % update_status_nr
+    print(state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_verison, update_status), '| DSMupdate=%sc' % update_status_nr)
     exitCode()
 
 if mode == 'status':
@@ -190,5 +192,5 @@ if mode == 'status':
     if critical and critical < int(status_temperature):
         state = 'CRITICAL'
 
-    print state + ' - Model: %s, S/N: %s, System Temperature: %s C, System Status: %s, System Fan: %s, CPU Fan: %s, Powersupply : %s' % (status_model, status_serial, status_temperature, status_system, status_system_fan, status_cpu_fan, status_power) + ' | system_temp=%sc' % status_temperature
+    print(state + ' - Model: %s, S/N: %s, System Temperature: %s C, System Status: %s, System Fan: %s, CPU Fan: %s, Powersupply : %s' % (status_model, status_serial, status_temperature, status_system, status_system_fan, status_cpu_fan, status_power) + ' | system_temp=%sc' % status_temperature)
     exitCode()
