@@ -7,7 +7,7 @@ This check plugin needs ```pysnmp``` to be installed on your system. You can ins
 Usage:
 ```
 > python3 check_synology.py -h
-usage: check_synology.py hostname username authkey privkey {mode} [-h] [-w W] [-c C]
+usage: check_synology.py hostname username authkey privkey {mode} [-h] [-w W] [-c C] [-p PORT]
 ```
 
 Example check:
@@ -26,6 +26,8 @@ Available modes:
 | storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %          |
 | update  | Shows the current DSM version and if DSM update is available               | set w/c to any int this triggers: <br> warning if available and critical <br> if other than un-/available                                                           |
 | status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C       |
+
+Note: A custom port can be specified by using ```-p```. The port defaults to 161.
 
 Example ```CheckCommand``` for use with ```icinga2```:
 ```
@@ -85,3 +87,5 @@ Make sure to set ```synology_snmp_user```, ```synology_snmp_autkey``` and ```syn
 If you want to add a missing check or another value to be added than you can use the [official Synology MIB Guide](https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf) as a hint for the right MIBs / OIDs and start a pull-request.
 
 This plugin was tested successfully with DS215j and DS718+
+
+Note: As of version 0.2 and higher only python3 is supported. Version 0.1 was the last python2 compatible release.
