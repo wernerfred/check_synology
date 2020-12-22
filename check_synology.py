@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("hostname", help="the hostname", type=str)
 parser.add_argument("username", help="the snmp user name", type=str)
 parser.add_argument("authkey", help="the auth key", type=str)
+parser.add_argument("privkeyProtocol", choices=["AES", "3DES"], help="the priv key protcol", type=str)
 parser.add_argument("privkey", help="the priv key", type=str)
 parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update", "status"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
@@ -23,16 +24,27 @@ port = args.port
 user_name = args.username
 auth_key = args.authkey
 priv_key = args.privkey
+priv_key_protocol = args.privkeyProtocol
 mode = args.mode
 warning = args.w
 critical = args.c
 
 state = 'OK'
 
+privateProtocolParameter = None
+if priv_key_protocol.lower() == "aes":
+	privateProtocolParameter = usmAesCfb128Protocol
+elif priv_key_protocol.lower() == "3des":
+	privateProtocolParameter = usm3DESEDEPrivProtocol
+else:
+	sys.exit(3)
+
+
+
 def snmpget(oid):
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
-               UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=usmAesCfb128Protocol),
+               UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=privateProtocolParameter),
                UdpTransportTarget((hostname, port)),
                ContextData(),
                ObjectType(ObjectIdentity(oid)
