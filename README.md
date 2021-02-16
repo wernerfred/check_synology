@@ -21,7 +21,7 @@ Available modes:
 | mode    | description                                                                | warning/critical                    |
 | :-----: | -------------------------------------------------------------------------- | ----------------------------------- |
 | load    | Checks the load1, load5 and load15 values                                  | if more than w/c in int (only load1)|
-| memory  | Checks the physical installed memory (free and total)                      | if less free than w/c in %          |
+| memory  | Checks the physical installed memory (unused, cached and total)            | if less usable than w/c in %        |
 | disk    | Detects and checks all disks (name, status, temperature)                   | if temp higher than w/c in °C <br> if c is set it will also trigger if status <br> is Failure or Crashed                                                             |
 | storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %          |
 | update  | Shows the current DSM version and if DSM update is available               | set w/c to any int this triggers: <br> warning if available and critical <br> if other than un-/available                                                           |
