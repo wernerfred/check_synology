@@ -76,7 +76,9 @@ if mode == 'load':
 
 if mode == 'memory':
     memory_total = float(snmpget('1.3.6.1.4.1.2021.4.5.0'))
-    memory_unused = float(snmpget('1.3.6.1.4.1.2021.4.6.0'))
+    memory_avail = float(snmpget('1.3.6.1.4.1.2021.4.6.0'))
+    memory_cached = float(snmpget('1.3.6.1.4.1.2021.4.15.0'))
+    memory_unused = memory_avail + memory_cached
     memory_percent = 100 / memory_total * memory_unused
 
     if warning and warning > int(memory_percent):
