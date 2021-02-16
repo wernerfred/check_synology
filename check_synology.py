@@ -11,12 +11,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("hostname", help="the hostname", type=str)
 parser.add_argument("username", help="the snmp user name", type=str)
 parser.add_argument("authkey", help="the auth key", type=str)
-parser.add_argument("privkeyProtocol", choices=["AES", "DES", "3DES"], help="the priv key protcol", type=str)
 parser.add_argument("privkey", help="the priv key", type=str)
 parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update", "status"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
+parser.add_argument("-k", help="the priv key protocol", type=str, dest="privkeyProtocol", default="AES", choices=["AES", "DES", "3DES"])
 args = parser.parse_args()
 
 hostname = args.hostname
@@ -31,7 +31,7 @@ critical = args.c
 
 state = 'OK'
 
-privateProtocolParameter = None
+privateProtocolParameter = usmAesCfb128Protocol
 if priv_key_protocol.lower() == "aes":
 	privateProtocolParameter = usmAesCfb128Protocol
 elif priv_key_protocol.lower() == "des":
