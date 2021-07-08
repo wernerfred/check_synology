@@ -100,6 +100,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/KreativeKrise"><img src="https://avatars.githubusercontent.com/u/6876675?v=4?s=100" width="100px;" alt=""/><br /><sub><b>KreativeKrise</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=KreativeKrise" title="Code">💻</a></td>
+    <td align="center"><a href="http://katulu.io"><img src="https://avatars.githubusercontent.com/u/9132055?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nicolai</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=nbuchwitz" title="Code">💻</a> <a href="#platform-nbuchwitz" title="Packaging/porting to new platform">📦</a></td>
   </tr>
 </table>
 
