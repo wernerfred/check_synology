@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "KreativeKrise",
+      "name": "KreativeKrise",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876675?v=4",
+      "profile": "https://github.com/KreativeKrise",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "check_synology",
+  "projectOwner": "wernerfred",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
