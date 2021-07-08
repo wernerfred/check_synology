@@ -23,6 +23,16 @@
         "code",
         "platform"
       ]
+    },
+    {
+      "login": "Byolock",
+      "name": "Byolock",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25748003?v=4",
+      "profile": "https://github.com/Byolock",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
