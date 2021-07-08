@@ -1,7 +1,4 @@
 # check_synology [![Release](https://img.shields.io/github/release/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology/releases)
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This plugin uses ```snmpv3``` with ```MD5``` + ```AES``` to check a lot of different values on your Synology DiskStation.
 
