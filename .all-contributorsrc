@@ -13,6 +13,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "nbuchwitz",
+      "name": "Nicolai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9132055?v=4",
+      "profile": "http://katulu.io",
+      "contributions": [
+        "code",
+        "platform"
+      ]
     }
   ],
   "contributorsPerLine": 7,
