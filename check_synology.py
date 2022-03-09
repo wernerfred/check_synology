@@ -1,4 +1,5 @@
 from pysnmp.hlapi import *
+from pysnmp.proto.errind import RequestTimedOut
 import argparse
 import sys
 import math
@@ -30,6 +31,7 @@ critical = args.c
 state = 'OK'
 
 def snmpget(oid):
+    global state
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
                UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=usmAesCfb128Protocol),
@@ -42,6 +44,9 @@ def snmpget(oid):
 
     if errorIndication:
         print(errorIndication)
+        if isinstance(errorIndication, RequestTimedOut):
+            state = "UNKNOWN"
+            exitCode()
     elif errorStatus:
         print('%s at %s' % (errorStatus.prettyPrint(),
                             errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
