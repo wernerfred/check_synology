@@ -166,13 +166,14 @@ if mode == 'update':
             '4': "Disconnected",
             '5': "Others"
         }
-
-    if warning and 1 == int(update_status_nr):
-        state = 'WARNING'
-    if critical and int(update_status_nr) in [4, 5]:
-        state = 'CRITICAL'
+    state_translation = {
+        '2': 'OK',
+        '1': 'WARNING',
+    }
 
     update_status = status_translation.get(update_status_nr)
+    state = state_translation.get(update_status_nr, "UNKNOWN")
+
     print(state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_verison, update_status), '| DSMupdate=%sc' % update_status_nr)
     exitCode()
 
