@@ -147,14 +147,19 @@ if mode == 'raid':
         }
         raid_status = status_translation.get(raid_status_nr)
         raid_name = raid_name.replace(" ", "")
-        if int(raid_status_nr) == (2 or 3 or 4 or 4 or 5 or 6 or 7 or 8 or 9 or 10 or 11 or 13 or 14 or 15 or 16 or 17 or 18 or 19 or 20):
-            if state != 'CRITICAL':
-                state = 'WARNING'
-        if int(raid_status_nr) == 12:
+
+        # All of those "non-Normal" RAID states should be signalled as WARNING.
+        warning_states = [2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20]
+
+        # Both Degrade and Crashed should be signalled as CRITICAL.
+        critical_states = [11, 12]
+
+        if int(raid_status_nr) in warning_states:
+            state = 'WARNING'
+        if int(raid_status_nr) in critical_states:
             state = 'CRITICAL'
         if int(raid_status_nr) == 21:
-            if state != 'CRITICAL':
-                state = 'UNKNOWN'
+            state = 'UNKNOWN'
 
         output += ' - ' + raid_name + ': Status: ' + raid_status
     print('%s%s ' % (state, output))
