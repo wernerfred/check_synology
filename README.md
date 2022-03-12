@@ -1,22 +1,45 @@
 # check_synology [![Release](https://img.shields.io/github/release/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology/releases)
 
-This plugin uses ```snmpv3``` with ```MD5``` + ```AES``` to check a lot of different values on your Synology DiskStation.
 
-This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip3 install pysnmp```
+## About
 
-Usage:
-```
-> python3 check_synology.py -h
-usage: check_synology.py hostname username authkey privkey {mode} [-h] [-w W] [-c C] [-p PORT]
+A monitoring plugin for checking different values on a Synology DiskStation,
+compatible with Nagios and Icinga.
+
+The plugin was tested successfully with DS215j, DS216+ and DS718+ models.
+For communication, it uses `snmpv3` with `MD5` + `AES`.
+
+If you want to add a missing check or another value, you are most welcome to
+submit a patch / pull request. As a reference for discovering the right
+MIBs / OIDs, please have a look at the official [Synology DiskStation MIB Guide].
+
+
+## Setup
+
+`check_synology` is based on the [easysnmp] SNMP library, which is a binding to
+the [Net-SNMP package]. You might need to install the corresponding packages on
+your operating system.
+
+An example to invoke the installation on a Debian-based system is:
+```shell
+apt install --yes libsnmp-dev snmp-mibs-downloader
+pip install git+https://github.com/wernerfred/check_synology
 ```
 
-Example check:
-```
-> python3 check_synology.py hostname snmp_user auth_key priv_key load
-OK - load average: 1.48, 1.71, 1.74 | load1=1.48c load5=1.71c load15=1.74c
+
+## Usage
+```shell
+check_synology --help
 ```
 
-Available modes:
+```shell
+check_synology
+usage: check_synology [-h] [-w W] [-c C] [-p PORT] hostname username authkey privkey {load,memory,disk,storage,update,status}
+```
+
+A custom port can be specified by using `-p`. The default value is `161`.
+
+### Available modes
 
 | mode    | description                                                                | warning/critical                    |
 | :-----: | -------------------------------------------------------------------------- | ----------------------------------- |
@@ -27,68 +50,50 @@ Available modes:
 | update  | Shows the current DSM version and if DSM update is available               | set w/c to any int this triggers: <br> warning if available and critical <br> if other than un-/available                                                           |
 | status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C       |
 
-Note: A custom port can be specified by using ```-p```. The port defaults to 161.
 
-Example ```CheckCommand``` for use with ```icinga2```:
+
+## Example check
+```shell
+check_synology hostname snmp_user auth_key priv_key load
+OK - load average: 1.48, 1.71, 1.74 | load1=1.48c load5=1.71c load15=1.74c
 ```
-object CheckCommand "check_synology" {
-  command = ["/usr/bin/python3", PluginDir + "/check_synology.py" ]
 
-  arguments = {
-    "--host" = {
-       skip_key = true
-       order = 0
-       value = "$synology_host$"
-    }
-    "--username" = {
-       skip_key = true
-       order = 1
-       value = "$synology_snmp_user$"
-    }
-    "--authkey" = {
-       skip_key = true
-       order = 2
-       value = "$synology_snmp_authkey$"
-    }
-    "--privkey" = {
-       skip_key = true
-       order = 3
-       value = "$synology_snmp_privkey$"
-    }
-    "--mode" = {
-       skip_key = true
-       order = 4
-       value = "$synology_mode$"
-    }
-    "-w" = "$synology_warning$"
-    "-c" = "$synology_critical$"
-  }
-}
+
+## Icinga 2 integration
+
+For integrating the check program into Icinga 2, you can use the configuration files
+in the ``icinga2`` subdirectory. You can easily acquire the files using:
+```shell
+wget https://raw.githubusercontent.com/wernerfred/check_synology/master/icinga2/synology-command.conf
+wget https://raw.githubusercontent.com/wernerfred/check_synology/master/icinga2/synology-services.conf
+wget https://raw.githubusercontent.com/wernerfred/check_synology/master/icinga2/synology-host.conf
 ```
-Example ```Service``` for use with ```icinga2```:
+
+In order to put the `check_synology` program at the right location aligned with the
+definition within `synology-command.conf`, regardless where it has been installed
+on your system, use:
+
+```shell
+ln -s $(which check_synology) /usr/lib/nagios/plugins/check_synology
 ```
-apply Service "syno-load" {
-  import "generic-service"
 
-  check_command = "check_synology"
 
-  vars.synology_mode = "load"
-  vars.synology_host = "$address$"
-  
-  vars.synology_warning = "$synology_load_w$"
-  vars.synology_critical = "$synology_load_c$"
+## Development
 
-  assign where host.vars.os == "DSM"
-}
+For setting up a development sandbox, you might want to follow this walkthrough.
+
+Acquire sources:
+```shell
+git clone https://github.com/wernerfred/check_synology
+cd check_synology
 ```
-Make sure to set ```synology_snmp_user```, ```synology_snmp_autkey``` and ```synology_snmp_privkey``` (e.g. in the host config file).
 
-
-If you want to add a missing check or another value to be added than you can use the [official Synology MIB Guide](https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf) as a hint for the right MIBs / OIDs and start a pull-request.
-
-This plugin was tested successfully with DS215j and DS718+
-
-Note: As of version 0.2 and higher only python3 is supported. Version 0.1 was the last python2 compatible release.
+Install program in development mode into a Python virtual environment:
+```shell
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --editable=.
+```
 
 ## Contributors ✨
 
@@ -112,3 +117,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+
+[easysnmp]: https://pypi.org/project/easysnmp/
+[Net-SNMP package]: http://www.net-snmp.org/
+[Synology DiskStation MIB Guide]: https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf
