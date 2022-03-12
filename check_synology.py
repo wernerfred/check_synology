@@ -1,12 +1,12 @@
-from pysnmp.hlapi import *
-from pysnmp.proto.errind import RequestTimedOut
 import argparse
 import sys
 import math
 import re
 
+import easysnmp
+
 AUTHOR = "Frederic Werner"
-VERSION = 0.2
+VERSION = "1.0.0"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("hostname", help="the hostname", type=str)
@@ -30,31 +30,36 @@ critical = args.c
 
 state = 'OK'
 
-def snmpget(oid):
-    global state
-    errorIndication, errorStatus, errorIndex, varBinds = next(
-        getCmd(SnmpEngine(),
-               UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=usmAesCfb128Protocol),
-               UdpTransportTarget((hostname, port)),
-               ContextData(),
-               ObjectType(ObjectIdentity(oid)
-                #.addAsn1MibSource('file:///usr/share/snmp', 'http://mibs.snmplabs.com/asn1/@mib@')
-                ))
-    )
+try:
+    session = easysnmp.Session(
+        hostname=hostname,
+        version=3,
+        security_level="auth_with_privacy",
+        security_username=user_name,
+        auth_password=auth_key,
+        auth_protocol="MD5",
+        privacy_password=priv_key,
+        privacy_protocol="AES128")
 
-    if errorIndication:
-        print(errorIndication)
-        if isinstance(errorIndication, RequestTimedOut):
-            state = "UNKNOWN"
-            exitCode()
-    elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
-    else:
-        for varBind in varBinds:
-            #answer = (' = '.join([x.prettyPrint() for x in varBind]))
-            #print(' = '.join([x.prettyPrint() for x in varBind]))
-            return varBind[-1].prettyPrint()
+except easysnmp.EasySNMPError as e:
+    print(e)
+    exit(-1)
+
+def snmpget(oid):
+    try:
+        res = session.get(oid)
+        return res.value
+    except easysnmp.EasySNMPError as e:
+        print(e)
+
+# Walk the given OID and return all child OIDs as a list of tuples of OID and value
+def snmpwalk(oid):
+    res = []
+    try:
+        res = session.walk(oid)
+    except easysnmp.EasySNMPError as e:
+        print(e)
+    return res
 
 def exitCode():
     if state == 'OK':
@@ -98,13 +103,9 @@ if mode == 'disk':
     maxDisk = 0
     output = ''
     perfdata = '|'
-    for i in range(0, 64, 1):
-        disk = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
-        if disk.startswith("No Such Instance"):
-            break
-        maxDisk = maxDisk + 1
-    for i in range(0, maxDisk, 1):
-        disk_name = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
+    for item in snmpwalk('1.3.6.1.4.1.6574.2.1.1.2'):
+        i = item.oid.split('.')[-1]
+        disk_name = item.value
         disk_status_nr = snmpget('1.3.6.1.4.1.6574.2.1.1.5.' + str(i))
         disk_temp = snmpget('1.3.6.1.4.1.6574.2.1.1.6.' + str(i))
         status_translation = {
@@ -131,9 +132,10 @@ if mode == 'disk':
 if mode == 'storage':
     output = ''
     perfdata = '|'
-    for i in range(1,256,1):
-        storage_name = snmpget('1.3.6.1.2.1.25.2.3.1.3.' + str(i))
-        if re.match("/volume(?!.+/@docker.*)", storage_name) :
+    for item in snmpwalk('1.3.6.1.2.1.25.2.3.1.3'):
+        i = item.oid.split('.')[-1]
+        storage_name = item.value
+        if re.match("/volume(?!.+/@docker.*)", storage_name):
             allocation_units = snmpget('1.3.6.1.2.1.25.2.3.1.4.' + str(i))
             size = snmpget('1.3.6.1.2.1.25.2.3.1.5.' + str(i))
             used = snmpget('1.3.6.1.2.1.25.2.3.1.6.' + str(i))
