@@ -42,7 +42,7 @@ try:
         privacy_protocol="AES128")
 
 except easysnmp.EasySNMPError as e:
-    print(e)
+    print("Could not connect to SNMP at {}. Reason: {}".format(hostname, e))
     exit(-1)
 
 def snmpget(oid):
