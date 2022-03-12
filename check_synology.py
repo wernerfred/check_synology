@@ -169,7 +169,7 @@ if mode == 'update':
 
     if warning and 1 == int(update_status_nr):
         state = 'WARNING'
-    if critical and [4|5] == int(update_status_nr):
+    if critical and int(update_status_nr) in [4, 5]:
         state = 'CRITICAL'
 
     update_status = status_translation.get(update_status_nr)
