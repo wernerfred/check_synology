@@ -6,7 +6,7 @@ import re
 import easysnmp
 
 AUTHOR = "Frederic Werner"
-VERSION = 0.2
+VERSION = "1.0.0"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("hostname", help="the hostname", type=str)
