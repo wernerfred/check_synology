@@ -6,8 +6,8 @@
 A monitoring plugin for checking different values on a Synology DiskStation,
 compatible with Nagios and Icinga.
 
-The plugin was tested successfully with DS215j, DS216+ and DS718+ models.
-For communication, it uses `snmpv3` with `MD5` + `AES`.
+The plugin was tested successfully with DS214play, DS215j, DS216+, DS218 and
+DS718+ models. For communication, it uses `SNMPv3` with `MD5` + `AES`.
 
 If you want to add a missing check or another value, you are most welcome to
 submit a patch / pull request. As a reference for discovering the right
