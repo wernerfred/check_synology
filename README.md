@@ -47,7 +47,7 @@ A custom port can be specified by using `-p`. The default value is `161`.
 | memory  | Checks the physical installed memory (unused, cached and total)            | if less usable than w/c in %        |
 | disk    | Detects and checks all disks (name, status, temperature)                   | if temp higher than w/c in °C <br> if c is set it will also trigger if status <br> is Failure or Crashed                                                             |
 | storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %          |
-| update  | Shows the current DSM version and if DSM update is available               | set w/c to any int this triggers: <br> warning if available and critical <br> if other than un-/available                                                           |
+| update  | Shows the current DSM version and if DSM update is available               | if update is "Unavailable", will trigger OK <br> if update is "Available", will trigger WARNING <br> otherwise: UNKNOWN |
 | status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C       |
 
 

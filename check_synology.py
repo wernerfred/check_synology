@@ -158,7 +158,7 @@ if mode == 'storage':
 
 if mode == 'update':
     update_status_nr = snmpget('1.3.6.1.4.1.6574.1.5.4.0')
-    update_dsm_verison = snmpget('1.3.6.1.4.1.6574.1.5.3.0')
+    update_dsm_version = snmpget('1.3.6.1.4.1.6574.1.5.3.0')
     status_translation = {
             '1': "Available",
             '2': "Unavailable",
@@ -166,14 +166,15 @@ if mode == 'update':
             '4': "Disconnected",
             '5': "Others"
         }
-
-    if warning and 1 == int(update_status_nr):
-        state = 'WARNING'
-    if critical and [4|5] == int(update_status_nr):
-        state = 'CRITICAL'
+    state_translation = {
+        '2': 'OK',
+        '1': 'WARNING',
+    }
 
     update_status = status_translation.get(update_status_nr)
-    print(state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_verison, update_status), '| DSMupdate=%sc' % update_status_nr)
+    state = state_translation.get(update_status_nr, "UNKNOWN")
+
+    print(state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_version, update_status), '| DSMupdate=%sc' % update_status_nr)
     exitCode()
 
 if mode == 'status':
