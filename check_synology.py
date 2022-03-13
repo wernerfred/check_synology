@@ -178,6 +178,8 @@ if mode == 'update':
     exitCode()
 
 if mode == 'status':
+
+    # 1. Retrieve and decode system metrics.
     status_model = snmpget('1.3.6.1.4.1.6574.1.5.1.0')
     status_serial = snmpget('1.3.6.1.4.1.6574.1.5.2.0')
     status_temperature = snmpget('1.3.6.1.4.1.6574.1.2.0')
@@ -188,19 +190,34 @@ if mode == 'status':
     status_power_nr = snmpget('1.3.6.1.4.1.6574.1.3.0')
 
     status_translation = {
-            '1': "Normal",
-            '2': "Failed"
-        }
+        '1': "Normal",
+        '2': "Failed"
+    }
 
     status_system = status_translation.get(status_system_nr)
     status_system_fan = status_translation.get(status_system_fan_nr)
     status_cpu_fan = status_translation.get(status_cpu_fan_nr)
     status_power = status_translation.get(status_power_nr)
 
-    if warning and warning < int(status_temperature):
-        state = 'WARNING'
-    if critical and critical < int(status_temperature):
-        state = 'CRITICAL'
+    # 2. Compute outcome for overall sensor state.
 
+    # 2.a Evaluate list of system status flags.
+    status_all = [status_system, status_system_fan, status_cpu_fan, status_power]
+    if all([status == "Normal" for status in status_all]):
+        state = 'OK'
+    elif any([status == "Failed" for status in status_all]):
+        state = 'CRITICAL'
+    else:
+        state = 'UNKNOWN'
+
+    # 2.b Evaluate system temperature thresholds.
+    # When state is already "CRITICAL", it can't get worse.
+    if state != 'CRITICAL':
+        if warning and warning < int(status_temperature):
+            state = 'WARNING'
+        if critical and critical < int(status_temperature):
+            state = 'CRITICAL'
+
+    # 3. Render status line and propagate exit code.
     print(state + ' - Model: %s, S/N: %s, System Temperature: %s C, System Status: %s, System Fan: %s, CPU Fan: %s, Powersupply : %s' % (status_model, status_serial, status_temperature, status_system, status_system_fan, status_cpu_fan, status_power) + ' | system_temp=%sc' % status_temperature)
     exitCode()
