@@ -100,7 +100,19 @@ if mode == 'memory':
     exitCode()
 
 if mode == 'disk':
+    """
+    Synology Disk MIB (OID: .1.3.6.1.4.1.6574.2)
+
+    OK:       Status from all disks is "Normal" and no temperature threshold is raised.
+    WARNING:  Temperature threshold for warning level is reached on any disk.
+    CRITICAL: Either the status from any disk is "SystemPartitionFailed" or "Crashed",
+              or the temperature threshold for criticality level is reached on any disk.
+    UNKNOWN:  No disk states collected via SNMP at all.
+    """
+
+    # 1. Retrieve and decode system metrics.
     maxDisk = 0
+    states = []
     output = ''
     perfdata = '|'
     for item in snmpwalk('1.3.6.1.4.1.6574.2.1.1.2'):
@@ -118,14 +130,37 @@ if mode == 'disk':
         disk_status = status_translation.get(disk_status_nr)
         disk_name = disk_name.replace(" ", "")
 
-        if warning and warning < int(disk_temp):
-            if state != 'CRITICAL':
-                state = 'WARNING'
-        if critical and critical < int(disk_temp) or int(disk_status_nr) == (4 or 5):
-            state = 'CRITICAL'
-
+        # 2. Compute textual and perfdata output.
         output += ' - ' + disk_name + ': Status: ' + disk_status + ', Temperature: ' + disk_temp + ' C'
         perfdata += 'temperature' + disk_name + '=' + disk_temp + 'c '
+
+        # 3. Collect outcome for individual sensor state.
+
+        # When state is already "CRITICAL", it can't get worse.
+        if 'CRITICAL' in states:
+            continue
+
+        # 3.a Evaluate list of disk status flag.
+        if disk_status in ["Normal"]:
+            states += 'OK'
+        elif disk_status in ["SystemPartitionFailed", "Crashed"]:
+            states += 'CRITICAL'
+
+        # 3.b Evaluate disk temperature thresholds.
+        if warning and warning < int(disk_temp):
+            states += 'WARNING'
+        if critical and critical < int(disk_temp):
+            states += 'CRITICAL'
+
+    # 4. Compute outcome for overall sensor state.
+    state = 'UNKNOWN'
+    priorities = ['CRITICAL', 'WARNING', 'UNKNOWN', 'OK']
+    for priority in priorities:
+        if priority in states:
+            state = priority
+            break
+
+    # 5. Respond with textual and perfdata output and propagate exit code.
     print('%s%s %s' % (state, output, perfdata))
     exitCode()
 
@@ -218,6 +253,6 @@ if mode == 'status':
         if critical and critical < int(status_temperature):
             state = 'CRITICAL'
 
-    # 3. Render status line and propagate exit code.
+    # 3. Respond with textual and perfdata output and propagate exit code.
     print(state + ' - Model: %s, S/N: %s, System Temperature: %s C, System Status: %s, System Fan: %s, CPU Fan: %s, Powersupply : %s' % (status_model, status_serial, status_temperature, status_system, status_system_fan, status_cpu_fan, status_power) + ' | system_temp=%sc' % status_temperature)
     exitCode()
