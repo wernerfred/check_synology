@@ -32,6 +32,16 @@ critical = args.c
 
 state = 'OK'
 
+def croak(message=None):
+    """
+    Exit program with `UNKNOWN` state and error message.
+    """
+    global state
+    state = 'UNKNOWN'
+    message = message and str(message) or "unknown error"
+    print('%s - %s' % (state, message))
+    exitCode()
+
 try:
     session = easysnmp.Session(
         hostname=hostname,
@@ -43,24 +53,28 @@ try:
         privacy_password=priv_key,
         privacy_protocol="AES128")
 
-except easysnmp.EasySNMPError as e:
-    print("Could not connect to SNMP at {}. Reason: {}".format(hostname, e))
-    exit(-1)
+except Exception as e:
+    croak(e)
 
 def snmpget(oid):
+    """
+    Return value from single OID.
+    """
     try:
         res = session.get(oid)
         return res.value
-    except easysnmp.EasySNMPError as e:
-        print(e)
+    except Exception as e:
+        croak(e)
 
-# Walk the given OID and return all child OIDs as a list of tuples of OID and value
 def snmpwalk(oid):
+    """
+    Walk the given OID and return all child OIDs as a list of tuples of OID and value.
+    """
     res = []
     try:
         res = session.walk(oid)
-    except easysnmp.EasySNMPError as e:
-        print(e)
+    except Exception as e:
+        croak(e)
     return res
 
 def exitCode():
