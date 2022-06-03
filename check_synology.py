@@ -142,15 +142,15 @@ if mode == 'disk':
 
         # 3.a Evaluate list of disk status flag.
         if disk_status in ["Normal"]:
-            states += 'OK'
+            states.append('OK')
         elif disk_status in ["SystemPartitionFailed", "Crashed"]:
-            states += 'CRITICAL'
+            states.append('CRITICAL')
 
         # 3.b Evaluate disk temperature thresholds.
         if warning and warning < int(disk_temp):
-            states += 'WARNING'
+            states.append('WARNING')
         if critical and critical < int(disk_temp):
-            states += 'CRITICAL'
+            states.append('CRITICAL')
 
     # 4. Compute outcome for overall sensor state.
     state = 'UNKNOWN'
