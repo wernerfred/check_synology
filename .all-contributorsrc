@@ -44,6 +44,15 @@
         "ideas",
         "example"
       ]
+    },
+    {
+      "login": "Doomas",
+      "name": "Thomas Galliker",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1712534?v=4",
+      "profile": "http://thomasgalliker.net",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
