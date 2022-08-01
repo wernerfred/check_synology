@@ -1,4 +1,8 @@
-# check_synology [![Release](https://img.shields.io/github/release/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology/releases)
+# check_synology
+
+[![Tests](https://github.com/wernerfred/check_synology/actions/workflows/tests.yml/badge.svg)](https://github.com/wernerfred/check_synology/actions/workflows/tests.yml)
+[![Code coverage](https://codecov.io/gh/wernerfred/check_synology/branch/master/graph/badge.svg)](https://codecov.io/gh/wernerfred/check_synology)
+[![Release](https://img.shields.io/github/release/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology/releases)
 
 
 ## About
