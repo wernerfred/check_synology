@@ -81,20 +81,18 @@ ln -s $(which check_synology) /usr/lib/nagios/plugins/check_synology
 
 ## Development
 
-For setting up a development sandbox, you might want to follow this walkthrough.
+For setting up a development sandbox and running the software tests, you might
+want to follow this walkthrough.
 
-Acquire sources:
 ```shell
 git clone https://github.com/wernerfred/check_synology
 cd check_synology
+make test
 ```
 
-Install program in development mode into a Python virtual environment:
-```shell
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --editable=.
-```
+By running `make test`, a Python virtual environment will be created within the
+`.venv` folder of your working tree. Use `source .venv/bin/activate` to
+activate it.
 
 ## Contributors ✨
 
