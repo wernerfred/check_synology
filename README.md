@@ -110,6 +110,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/amotl"><img src="https://avatars.githubusercontent.com/u/453543?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andreas Motl</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=amotl" title="Code">💻</a> <a href="#ideas-amotl" title="Ideas, Planning, & Feedback">🤔</a> <a href="#example-amotl" title="Examples">💡</a></td>
     <td align="center"><a href="http://thomasgalliker.net"><img src="https://avatars.githubusercontent.com/u/1712534?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Thomas Galliker</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=Doomas" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Kraeutergarten"><img src="https://avatars.githubusercontent.com/u/5418554?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kraeutergarten</b></sub></a><br /><a href="#userTesting-Kraeutergarten" title="User Testing">📓</a></td>
+    <td align="center"><a href="https://github.com/jebabin"><img src="https://avatars.githubusercontent.com/u/11474713?v=4?s=100" width="100px;" alt=""/><br /><sub><b>jebabin</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=jebabin" title="Documentation">📖</a></td>
   </tr>
 </table>
 
