@@ -15,6 +15,7 @@ jobs:
       matrix:
         os: [ "ubuntu-latest", "macos-latest" ]
         python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]
+      fail-fast: false
 
     env:
       OS: ${{ matrix.os }}
@@ -37,6 +38,16 @@ jobs:
           architecture: x64
           cache: 'pip'
           cache-dependency-path: 'setup.py'
+
+      - name: Install prerequisites (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt install --yes libsnmp-dev snmp-mibs-downloader
+
+      - name: Install prerequisites (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install net-snmp
 
       - name: Run linter
         run: |
