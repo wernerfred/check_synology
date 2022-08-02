@@ -26,7 +26,7 @@ setup(
     py_modules=["check_synology"],
     entry_points={"console_scripts": ["check_synology = check_synology"]},
     python_requires=">=3.4",
-    install_requires=["easysnmp>=0.2,<1"],
+    install_requires=["easysnmp>=0.2.6,<1"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: GNU Affero General Public License v3",
