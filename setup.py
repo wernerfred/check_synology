@@ -32,6 +32,7 @@ setup(
             "pytest<8",
             "pytest-mock<4",
             "pytest-cov<4",
+            "pysnmplib<6",
         ],
     },
     classifiers=[
