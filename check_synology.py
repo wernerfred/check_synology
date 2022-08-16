@@ -19,7 +19,7 @@ parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory"
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
-parser.add_argument("-s", help="SNMP privacy protocol", type=str, default="AES128", choices=["AES128", "DES"])
+parser.add_argument("-e", help="SNMP privacy protocol encryption", type=str, default="AES128", choices=["AES128", "DES"])
 args = parser.parse_args()
 
 hostname = args.hostname
@@ -30,7 +30,7 @@ priv_key = args.privkey
 mode = args.mode
 warning = args.w
 critical = args.c
-priv_protocol = args.s
+priv_protocol = args.e
 
 state = 'OK'
 
