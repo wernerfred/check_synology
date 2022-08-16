@@ -34,10 +34,11 @@ check_synology --help
 
 ```shell
 check_synology
-usage: check_synology [-h] [-w W] [-c C] [-p PORT] hostname username authkey privkey {load,memory,disk,storage,update,status}
+usage: check_synology [-h] [-w W] [-c C] [-p PORT] [-e PROTOCOL ] hostname username authkey privkey {load,memory,disk,storage,update,status}
 ```
 
 A custom port can be specified by using `-p`. The default value is `161`.
+A custom privacy protocol can be specified by using `-e`. The default value is `AES128`.
 
 ### Available modes
 
