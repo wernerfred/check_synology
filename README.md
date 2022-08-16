@@ -112,6 +112,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Kraeutergarten"><img src="https://avatars.githubusercontent.com/u/5418554?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kraeutergarten</b></sub></a><br /><a href="#userTesting-Kraeutergarten" title="User Testing">📓</a></td>
     <td align="center"><a href="https://github.com/kamakazikamikaze"><img src="https://avatars.githubusercontent.com/u/8862823?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kent Coble</b></sub></a><br /><a href="#plugin-kamakazikamikaze" title="Plugin/utility libraries">🔌</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/dommi22m"><img src="https://avatars.githubusercontent.com/u/28754250?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dommi22m</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=dommi22m" title="Code">💻</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
