@@ -31,8 +31,8 @@ priv_key = args.privkey
 mode = args.mode
 warning = args.w
 critical = args.c
-snmp_timeout = args.timeout
-snmp_retries = args.retries
+snmp_timeout = args.t
+snmp_retries = args.r
 
 state = 'OK'
 
