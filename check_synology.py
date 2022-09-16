@@ -19,8 +19,8 @@ parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory"
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
-parser.add_argument("--timeout", help="timeout for snmp connection", type=int, default=10)
-parser.add_argument("--retries", help="retries for snmp connection if timeout occurs", type=int, default=3)
+parser.add_argument("-t", help="timeout for snmp connection", type=int, default=10)
+parser.add_argument("-r", help="retries for snmp connection if timeout occurs", type=int, default=3)
 args = parser.parse_args()
 
 hostname = args.hostname
