@@ -34,10 +34,11 @@ check_synology --help
 
 ```shell
 check_synology
-usage: check_synology [-h] [-w W] [-c C] [-p PORT] hostname username authkey privkey {load,memory,disk,storage,update,status}
+usage: check_synology [-h] [-w W] [-c C] [-t T] [-r R] [-p PORT] hostname username authkey privkey {load,memory,disk,storage,update,status}
 ```
 
 A custom port can be specified by using `-p`. The default value is `161`.
+Custom timeouts (`-t`) and retries (`-r`) can be specified by using `-t` and `-r` respectively. The default values are `-t 10` and `-r 3`.
 
 ### Available modes
 
