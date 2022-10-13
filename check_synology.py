@@ -49,6 +49,7 @@ def croak(message=None):
 try:
     session = easysnmp.Session(
         hostname=hostname,
+        remote_port=port,
         version=3,
         timeout=snmp_timeout,
         retries=snmp_retries,
