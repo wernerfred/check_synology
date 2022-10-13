@@ -21,7 +21,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     platforms=["any"],
-    license="AGPL-3.0",
+    license="MIT",
     keywords="synology, synology-diskstation, snmp, snmpv3, monitoring, monitoring-plugin, nagios, icinga2, icinga2-plugin",
     py_modules=["check_synology"],
     entry_points={"console_scripts": ["check_synology = check_synology:__main__"]},
@@ -36,7 +36,7 @@ setup(
     },
     classifiers=[
         "Development Status :: 4 - Beta",
-        "License :: OSI Approved :: GNU Affero General Public License v3",
+        "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         "Operating System :: OS Independent",
         "Environment :: Console",
