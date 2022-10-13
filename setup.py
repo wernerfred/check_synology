@@ -24,7 +24,7 @@ setup(
     license="AGPL-3.0",
     keywords="synology, synology-diskstation, snmp, snmpv3, monitoring, monitoring-plugin, nagios, icinga2, icinga2-plugin",
     py_modules=["check_synology"],
-    entry_points={"console_scripts": ["check_synology = check_synology"]},
+    entry_points={"console_scripts": ["check_synology = check_synology:__main__"]},
     python_requires=">=3.6",
     install_requires=["easysnmp>=0.2.6,<1"],
     extras_require={
