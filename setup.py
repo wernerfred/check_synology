@@ -6,7 +6,7 @@ from setuptools import setup
 
 
 def read(path):
-    with open(os.path.join(os.path.dirname(__file__), path)) as f:
+    with open(os.path.join(os.path.dirname(__file__), path), encoding='utf-8') as f:
         return f.read()
 
 
