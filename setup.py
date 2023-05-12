@@ -6,7 +6,7 @@ from setuptools import setup
 
 
 def read(path):
-    with open(os.path.join(os.path.dirname(__file__), path)) as f:
+    with open(os.path.join(os.path.dirname(__file__), path), encoding='utf-8') as f:
         return f.read()
 
 
@@ -24,7 +24,7 @@ setup(
     license="AGPL-3.0",
     keywords="synology, synology-diskstation, snmp, snmpv3, monitoring, monitoring-plugin, nagios, icinga2, icinga2-plugin",
     py_modules=["check_synology"],
-    entry_points={"console_scripts": ["check_synology = check_synology"]},
+    scripts=["check_synology.py"],
     python_requires=">=3.4",
     install_requires=["easysnmp>=0.2.6,<1"],
     classifiers=[
