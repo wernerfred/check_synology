@@ -138,7 +138,7 @@ if mode == 'disk':
     output = ''
     perfdata = '|'
     for item in snmpwalk('1.3.6.1.4.1.6574.2.1.1.2'):
-        i = item.oid.split('.')[-1]
+        i = item.oid_index or item.oid.split('.')[-1]
         disk_name = item.value
         disk_status_nr = snmpget('1.3.6.1.4.1.6574.2.1.1.5.' + str(i))
         disk_temp = snmpget('1.3.6.1.4.1.6574.2.1.1.6.' + str(i))
@@ -190,7 +190,7 @@ if mode == 'storage':
     output = ''
     perfdata = '|'
     for item in snmpwalk('1.3.6.1.2.1.25.2.3.1.3'):
-        i = item.oid.split('.')[-1]
+        i = item.oid_index or item.oid.split('.')[-1]
         storage_name = item.value
         if re.match("/volume(?!.+/@docker.*)", storage_name):
             allocation_units = snmpget('1.3.6.1.2.1.25.2.3.1.4.' + str(i))
