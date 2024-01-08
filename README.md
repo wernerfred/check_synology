@@ -118,6 +118,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kamakazikamikaze"><img src="https://avatars.githubusercontent.com/u/8862823?v=4?s=100" width="100px;" alt="Kent Coble"/><br /><sub><b>Kent Coble</b></sub></a><br /><a href="#plugin-kamakazikamikaze" title="Plugin/utility libraries">🔌</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/to-kn"><img src="https://avatars.githubusercontent.com/u/1778428?v=4?s=100" width="100px;" alt="Tobias Knipping"/><br /><sub><b>Tobias Knipping</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=to-kn" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fibberblank"><img src="https://avatars.githubusercontent.com/u/68998809?v=4?s=100" width="100px;" alt="fibberblank"/><br /><sub><b>fibberblank</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=fibberblank" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dropthemic"><img src="https://avatars.githubusercontent.com/u/20729448?v=4?s=100" width="100px;" alt="dropthemic"/><br /><sub><b>dropthemic</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=dropthemic" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
