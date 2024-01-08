@@ -19,6 +19,7 @@ parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory"
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
+parser.add_argument("-e", help="SNMP privacy protocol encryption", type=str, default="AES128", choices=["AES128", "DES"])
 parser.add_argument("-t", help="timeout for snmp connection", type=int, default=10)
 parser.add_argument("-r", help="retries for snmp connection if timeout occurs", type=int, default=3)
 args = parser.parse_args()
@@ -31,6 +32,7 @@ priv_key = args.privkey
 mode = args.mode
 warning = args.w
 critical = args.c
+priv_protocol = args.e
 snmp_timeout = args.t
 snmp_retries = args.r
 
@@ -57,7 +59,7 @@ try:
         auth_password=auth_key,
         auth_protocol="MD5",
         privacy_password=priv_key,
-        privacy_protocol="AES128")
+        privacy_protocol=priv_protocol)
 
 except Exception as e:
     croak(e)
