@@ -8,7 +8,7 @@ import re
 import easysnmp
 
 AUTHOR = "Frederic Werner"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("hostname", help="the hostname", type=str)
@@ -20,6 +20,8 @@ parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
 parser.add_argument("-e", help="SNMP privacy protocol encryption", type=str, default="AES128", choices=["AES128", "DES"])
+parser.add_argument("-t", help="timeout for snmp connection", type=int, default=10)
+parser.add_argument("-r", help="retries for snmp connection if timeout occurs", type=int, default=3)
 args = parser.parse_args()
 
 hostname = args.hostname
@@ -31,6 +33,8 @@ mode = args.mode
 warning = args.w
 critical = args.c
 priv_protocol = args.e
+snmp_timeout = args.t
+snmp_retries = args.r
 
 state = 'OK'
 
@@ -48,6 +52,8 @@ try:
     session = easysnmp.Session(
         hostname=hostname,
         version=3,
+        timeout=snmp_timeout,
+        retries=snmp_retries,
         security_level="auth_with_privacy",
         security_username=user_name,
         auth_password=auth_key,
@@ -134,7 +140,7 @@ if mode == 'disk':
     output = ''
     perfdata = '|'
     for item in snmpwalk('1.3.6.1.4.1.6574.2.1.1.2'):
-        i = item.oid.split('.')[-1]
+        i = item.oid_index or item.oid.split('.')[-1]
         disk_name = item.value
         disk_status_nr = snmpget('1.3.6.1.4.1.6574.2.1.1.5.' + str(i))
         disk_temp = snmpget('1.3.6.1.4.1.6574.2.1.1.6.' + str(i))
@@ -186,7 +192,7 @@ if mode == 'storage':
     output = ''
     perfdata = '|'
     for item in snmpwalk('1.3.6.1.2.1.25.2.3.1.3'):
-        i = item.oid.split('.')[-1]
+        i = item.oid_index or item.oid.split('.')[-1]
         storage_name = item.value
         if re.match("/volume(?!.+/@docker.*)", storage_name):
             allocation_units = snmpget('1.3.6.1.2.1.25.2.3.1.4.' + str(i))
@@ -196,6 +202,11 @@ if mode == 'storage':
             storage_size = int((int(allocation_units) * int(size)) / 1000000000)
             storage_used = int((int(used) * int(allocation_units)) / 1000000000)
             storage_free = int(storage_size - storage_used)
+
+            # some virtual volume have size zero
+            if storage_size == 0: 
+                continue
+
             storage_used_percent = int(storage_used * 100 / storage_size)
 
             if warning and warning < int(storage_used_percent):
