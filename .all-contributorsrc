@@ -98,6 +98,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dropthemic",
+      "name": "dropthemic",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20729448?v=4",
+      "profile": "https://github.com/dropthemic",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -106,5 +115,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }
