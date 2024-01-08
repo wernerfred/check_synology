@@ -200,6 +200,11 @@ if mode == 'storage':
             storage_size = int((int(allocation_units) * int(size)) / 1000000000)
             storage_used = int((int(used) * int(allocation_units)) / 1000000000)
             storage_free = int(storage_size - storage_used)
+
+            # some virtual volume have size zero
+            if storage_size == 0: 
+                continue
+
             storage_used_percent = int(storage_used * 100 / storage_size)
 
             if warning and warning < int(storage_used_percent):
