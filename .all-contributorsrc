@@ -107,6 +107,14 @@
       "contributions": [
         "code"
       ]
+    },
+      "login": "cycloon",
+      "name": "Christian Gut",
+      "avatar_url": "https://avatars.githubusercontent.com/u/236784?v=4",
+      "profile": "http://cycloon.org",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

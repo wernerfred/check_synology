@@ -34,10 +34,12 @@ check_synology --help
 
 ```shell
 check_synology
-usage: check_synology [-h] [-w W] [-c C] [-t T] [-r R] [-p PORT] hostname username authkey privkey {load,memory,disk,storage,update,status}
+
+usage: check_synology [-h] [-w W] [-c C] [-t T] [-r R] [-p PORT] [-e PROTOCOL] hostname username authkey privkey {load,memory,disk,storage,update,status}
 ```
 
 A custom port can be specified by using `-p`. The default value is `161`.
+A custom privacy protocol can be specified by using `-e`. The default value is `AES128`.
 Custom timeouts (`-t`) and retries (`-r`) can be specified by using `-t` and `-r` respectively. The default values are `-t 10` and `-r 3`.
 
 ### Available modes
@@ -119,6 +121,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/to-kn"><img src="https://avatars.githubusercontent.com/u/1778428?v=4?s=100" width="100px;" alt="Tobias Knipping"/><br /><sub><b>Tobias Knipping</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=to-kn" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fibberblank"><img src="https://avatars.githubusercontent.com/u/68998809?v=4?s=100" width="100px;" alt="fibberblank"/><br /><sub><b>fibberblank</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=fibberblank" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/dropthemic"><img src="https://avatars.githubusercontent.com/u/20729448?v=4?s=100" width="100px;" alt="dropthemic"/><br /><sub><b>dropthemic</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=dropthemic" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://cycloon.org"><img src="https://avatars.githubusercontent.com/u/236784?v=4?s=100" width="100px;" alt="Christian Gut"/><br /><sub><b>Christian Gut</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=cycloon" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
