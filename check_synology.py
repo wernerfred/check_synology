@@ -15,7 +15,8 @@ parser.add_argument("hostname", help="the hostname", type=str)
 parser.add_argument("username", help="the snmp user name", type=str)
 parser.add_argument("authkey", help="the auth key", type=str)
 parser.add_argument("privkey", help="the priv key", type=str)
-parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update", "status"])
+parser.add_argument("mode", help="the mode", type=str, choices=[
+    "load", "memory", "disk", "storage", "update", "status", "raid"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 parser.add_argument("-p", help="the snmp port", type=int, dest="port", default=161)
@@ -121,6 +122,55 @@ if mode == 'memory':
         state = 'CRITICAL'
 
     print(state + ' - {:0.1f}% '.format(memory_percent) + 'usable ({0:0.1f} MB free and {1:0.1f} MB cached out of {2:0.1f} MB)'.format((memory_unused / 1024), (memory_cached / 1024), (memory_total / 1024)), '|memory_total=%dc' % memory_total, 'memory_unused=%dc' % memory_unused, 'memory_cached=%dc' % memory_cached, 'memory_usable=%dc' % memory_usable, 'memory_percent=%d' % memory_percent + '%')
+    exitCode()
+
+if mode == 'raid':
+    output = ''
+    for item in snmpwalk('1.3.6.1.4.1.6574.3.1.1.2'):
+        i = item.oid.split('.')[-1]
+        raid_name = item.value
+        raid_status_nr = snmpget('1.3.6.1.4.1.6574.3.1.1.3.' + str(i))
+        status_translation = {
+            '1': "Normal",
+            '2': "Repairing",
+            '3': "Migrating",
+            '4': "Expanding",
+            '5': "Deleting",
+            '6': "Creating",
+            '7': "RaidSyncing",
+            '8': "RaidParityChecking",
+            '9': "RaidAssembling",
+            '10': "Canceling",
+            '11': "Degrade",
+            '12': "Crashed",
+            '13': "DataScrubbing",
+            '14': "RaidDeploying",
+            '15': "RaidUnDeploying",
+            '16': "RaidMountCache",
+            '17': "RaidUnmountCache",
+            '18': "RaidExpandingUnfinishedSHR",
+            '19': "RaidConvertSHRToPool",
+            '20': "RaidMigrateSHR1ToSHR2",
+            '21': "RaidUnknownStatus"
+        }
+        raid_status = status_translation.get(raid_status_nr)
+        raid_name = raid_name.replace(" ", "")
+
+        # All of those "non-Normal" RAID states should be signalled as WARNING.
+        warning_states = [2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20]
+
+        # Both Degrade and Crashed should be signalled as CRITICAL.
+        critical_states = [11, 12]
+
+        if int(raid_status_nr) in warning_states:
+            state = 'WARNING'
+        if int(raid_status_nr) in critical_states:
+            state = 'CRITICAL'
+        if int(raid_status_nr) == 21:
+            state = 'UNKNOWN'
+
+        output += ' - ' + raid_name + ': Status: ' + raid_status
+    print('%s%s ' % (state, output))
     exitCode()
 
 if mode == 'disk':
