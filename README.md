@@ -44,14 +44,14 @@ Custom timeouts (`-t`) and retries (`-r`) can be specified by using `-t` and `-r
 
 ### Available modes
 
-| mode    | description                                                                | warning/critical                    |
-| :-----: | -------------------------------------------------------------------------- | ----------------------------------- |
-| load    | Checks the load1, load5 and load15 values                                  | if more than w/c in int (only load1)|
-| memory  | Checks the physical installed memory (unused, cached and total)            | if less usable than w/c in %        |
-| disk    | Detects and checks all disks (status, temperature)                         | if status is "SystemPartitionFailed" or "Crashed", will trigger CRITICAL <br> if temperature is higher than w/c in °C, will trigger WARNING/CRITICAL |
-| storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %          |
-| update  | Shows the current DSM version and if DSM update is available               | if update is "Unavailable", will trigger OK <br> if update is "Available", will trigger WARNING <br> otherwise: UNKNOWN |
-| status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C       |
+| mode    | description                                                                | warning/critical                                                                                                                                                                                                                                                                  |
+| :-----: |----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| load    | Checks the load1, load5 and load15 values                                  | if more than w/c in int (only load1)                                                                                                                                                                                                                                              |
+| memory  | Checks the physical installed memory (unused, cached and total)            | if less usable than w/c in %                                                                                                                                                                                                                                                      |
+| disk    | Detects and checks all disks (status, temperature, health status)          | if status is "SystemPartitionFailed" or "Crashed", will trigger CRITICAL <br> if temperature is higher than w/c in °C, will trigger WARNING/CRITICAL <br> if health status is "Warning", will trigger WARNING, if health status is "Critical" or "Failing", will trigger CRITICAL |
+| storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %                                                                                                                                                                                                                                                        |
+| update  | Shows the current DSM version and if DSM update is available               | if update is "Unavailable", will trigger OK <br> if update is "Available", will trigger WARNING <br> otherwise: UNKNOWN                                                                                                                                                           |
+| status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C                                                                                                                                                                                                                                                     |
 
 
 
