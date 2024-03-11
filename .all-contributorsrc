@@ -98,6 +98,42 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "fibberblank",
+      "name": "fibberblank",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68998809?v=4",
+      "profile": "https://github.com/fibberblank",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "dropthemic",
+      "name": "dropthemic",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20729448?v=4",
+      "profile": "https://github.com/dropthemic",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "cycloon",
+      "name": "Christian Gut",
+      "avatar_url": "https://avatars.githubusercontent.com/u/236784?v=4",
+      "profile": "http://cycloon.org",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "p-try",
+      "name": "Julian Petri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7594671?v=4",
+      "profile": "https://github.com/p-try",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -106,5 +142,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }

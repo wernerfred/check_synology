@@ -34,22 +34,24 @@ check_synology --help
 
 ```shell
 check_synology
-usage: check_synology [-h] [-w W] [-c C] [-t T] [-r R] [-p PORT] hostname username authkey privkey {load,memory,disk,storage,update,status}
+
+usage: check_synology [-h] [-w W] [-c C] [-t T] [-r R] [-p PORT] [-e PROTOCOL] hostname username authkey privkey {load,memory,disk,storage,update,status}
 ```
 
 A custom port can be specified by using `-p`. The default value is `161`.
+A custom privacy protocol can be specified by using `-e`. The default value is `AES128`.
 Custom timeouts (`-t`) and retries (`-r`) can be specified by using `-t` and `-r` respectively. The default values are `-t 10` and `-r 3`.
 
 ### Available modes
 
-| mode    | description                                                                | warning/critical                    |
-| :-----: | -------------------------------------------------------------------------- | ----------------------------------- |
-| load    | Checks the load1, load5 and load15 values                                  | if more than w/c in int (only load1)|
-| memory  | Checks the physical installed memory (unused, cached and total)            | if less usable than w/c in %        |
-| disk    | Detects and checks all disks (status, temperature)                         | if status is "SystemPartitionFailed" or "Crashed", will trigger CRITICAL <br> if temperature is higher than w/c in °C, will trigger WARNING/CRITICAL |
-| storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %          |
-| update  | Shows the current DSM version and if DSM update is available               | if update is "Unavailable", will trigger OK <br> if update is "Available", will trigger WARNING <br> otherwise: UNKNOWN |
-| status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C       |
+| mode    | description                                                                | warning/critical                                                                                                                                                                                                                                                                  |
+| :-----: |----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| load    | Checks the load1, load5 and load15 values                                  | if more than w/c in int (only load1)                                                                                                                                                                                                                                              |
+| memory  | Checks the physical installed memory (unused, cached and total)            | if less usable than w/c in %                                                                                                                                                                                                                                                      |
+| disk    | Detects and checks all disks (status, temperature, health status)          | if status is "SystemPartitionFailed" or "Crashed", will trigger CRITICAL <br> if temperature is higher than w/c in °C, will trigger WARNING/CRITICAL <br> if health status is "Warning", will trigger WARNING, if health status is "Critical" or "Failing", will trigger CRITICAL |
+| storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %                                                                                                                                                                                                                                                        |
+| update  | Shows the current DSM version and if DSM update is available               | if update is "Unavailable", will trigger OK <br> if update is "Available", will trigger WARNING <br> otherwise: UNKNOWN                                                                                                                                                           |
+| status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C                                                                                                                                                                                                                                                     |
 
 
 
@@ -115,9 +117,22 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center"><a href="https://github.com/jebabin"><img src="https://avatars.githubusercontent.com/u/11474713?v=4?s=100" width="100px;" alt="jebabin"/><br /><sub><b>jebabin</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=jebabin" title="Documentation">📖</a></td>
     </tr>
     <tr>
-      <td align="center"><a href="https://github.com/kamakazikamikaze"><img src="https://avatars.githubusercontent.com/u/8862823?v=4?s=100" width="100px;" alt="Kent Coble"/><br /><sub><b>Kent Coble</b></sub></a><br /><a href="#plugin-kamakazikamikaze" title="Plugin/utility libraries">🔌</a></td>
-      <td align="center"><a href="https://github.com/to-kn"><img src="https://avatars.githubusercontent.com/u/1778428?v=4?s=100" width="100px;" alt="Tobias Knipping"/><br /><sub><b>Tobias Knipping</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=to-kn" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/KreativeKrise"><img src="https://avatars.githubusercontent.com/u/6876675?v=4?s=100" width="100px;" alt="KreativeKrise"/><br /><sub><b>KreativeKrise</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=KreativeKrise" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://katulu.io"><img src="https://avatars.githubusercontent.com/u/9132055?v=4?s=100" width="100px;" alt="Nicolai"/><br /><sub><b>Nicolai</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=nbuchwitz" title="Code">💻</a> <a href="#platform-nbuchwitz" title="Packaging/porting to new platform">📦</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Byolock"><img src="https://avatars.githubusercontent.com/u/25748003?v=4?s=100" width="100px;" alt="Byolock"/><br /><sub><b>Byolock</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=Byolock" title="Code">💻</a> <a href="https://github.com/wernerfred/check_synology/issues?q=author%3AByolock" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/amotl"><img src="https://avatars.githubusercontent.com/u/453543?v=4?s=100" width="100px;" alt="Andreas Motl"/><br /><sub><b>Andreas Motl</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=amotl" title="Code">💻</a> <a href="#ideas-amotl" title="Ideas, Planning, & Feedback">🤔</a> <a href="#example-amotl" title="Examples">💡</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://thomasgalliker.net"><img src="https://avatars.githubusercontent.com/u/1712534?v=4?s=100" width="100px;" alt="Thomas Galliker"/><br /><sub><b>Thomas Galliker</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=Doomas" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Kraeutergarten"><img src="https://avatars.githubusercontent.com/u/5418554?v=4?s=100" width="100px;" alt="Kraeutergarten"/><br /><sub><b>Kraeutergarten</b></sub></a><br /><a href="#userTesting-Kraeutergarten" title="User Testing">📓</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jebabin"><img src="https://avatars.githubusercontent.com/u/11474713?v=4?s=100" width="100px;" alt="jebabin"/><br /><sub><b>jebabin</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=jebabin" title="Documentation">📖</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kamakazikamikaze"><img src="https://avatars.githubusercontent.com/u/8862823?v=4?s=100" width="100px;" alt="Kent Coble"/><br /><sub><b>Kent Coble</b></sub></a><br /><a href="#plugin-kamakazikamikaze" title="Plugin/utility libraries">🔌</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/to-kn"><img src="https://avatars.githubusercontent.com/u/1778428?v=4?s=100" width="100px;" alt="Tobias Knipping"/><br /><sub><b>Tobias Knipping</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=to-kn" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/fibberblank"><img src="https://avatars.githubusercontent.com/u/68998809?v=4?s=100" width="100px;" alt="fibberblank"/><br /><sub><b>fibberblank</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=fibberblank" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dropthemic"><img src="https://avatars.githubusercontent.com/u/20729448?v=4?s=100" width="100px;" alt="dropthemic"/><br /><sub><b>dropthemic</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=dropthemic" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://cycloon.org"><img src="https://avatars.githubusercontent.com/u/236784?v=4?s=100" width="100px;" alt="Christian Gut"/><br /><sub><b>Christian Gut</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=cycloon" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/bigitag"><img src="https://avatars.githubusercontent.com/u/111128842?v=4?s=100" width="100px;" alt="bigitag"/><br /><sub><b>bigitag</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=bigitag" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/p-try"><img src="https://avatars.githubusercontent.com/u/7594671?v=4?s=100" width="100px;" alt="Julian Petri"/><br /><sub><b>Julian Petri</b></sub></a><br /><a href="https://github.com/wernerfred/check_synology/commits?author=p-try" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
