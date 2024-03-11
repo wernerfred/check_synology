@@ -116,6 +116,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "p-try",
+      "name": "Julian Petri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7594671?v=4",
+      "profile": "https://github.com/p-try",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
